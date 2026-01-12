@@ -19,11 +19,11 @@
             Auth
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/web testing/page/auth/login.php">Login</a></li>
+            <li><a class="dropdown-item" href="/web testing/?page=login">Login</a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" href="/web testing/page/auth/register.php">Register</a></li>
+            <li><a class="dropdown-item" href="/web testing/?page=register">Register</a></li>
           </ul>
         </li>
         <li class="nav-item">
