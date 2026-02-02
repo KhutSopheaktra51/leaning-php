@@ -1,25 +1,47 @@
 <?php
 
 $nameErr = $usernameErr = $passwdErr = '';
-$name = '';
+$name = $username = '';
 
 if (isset($_POST['name'], $_POST['username'], $_POST['password'], $_POST['confirmpasswd'])) {
-  $name = $_POST['name'];
-  $username = $_POST['username'];
-  $passwd = $_POST['password'];
-  $confirmpasswd = $_POST['confirmpasswd'];
+  $name = trim($_POST['name']);
+  $username = trim($_POST['username']);
+  $passwd = trim($_POST['password']);
+  $confirmpasswd = trim($_POST['confirmpasswd']);
 
   if (empty($name)) {
     $nameErr = "please input name";
   }
+
   if (empty($username)) {
     $usernameErr = 'please input username';
   }
-  if (empty($passwd)) {
+
+  if (empty(strlen($passwd > 25 || strlen($passwd) < 6))) {
     $passwdErr = 'please input password';
   }
-  if (empty($confirmpasswd)) {
-    $confirmpasswdErr = 'please confirm password';
+
+  if ($passwd !== $confirmpasswd) {
+    $passwdErr = 'password does not match';
+  }
+
+  if (usernmaeExists($username)) {
+    $usernameError = 'USERNAME_ALLREADY_EXISTS';
+  }
+
+  if (empty($nameErr) && empty($usernameErr) && empty($passwdErr)) {
+
+    if (registerUser($name, $username, $passwd)) {
+      $name = $username = '';
+      echo '<div class="alert alert-success" role="alert">
+                    register success!
+                    <a href = "./?page=login" class = "alert-link">
+                  </div>';
+    } else {
+      echo '<div class="alert alert-success" role="alert">
+                    A simple success alert—check it out!
+                  </div>';
+    }
   }
 }
 
@@ -29,27 +51,25 @@ if (isset($_POST['name'], $_POST['username'], $_POST['password'], $_POST['confir
   <h3>Register Page</h3>
   <div class="mb-3">
     <label class="form-label">Name</label>
-    <input name="name" value="<?php echo $name?>" type="text" class="form-control
+    <input name="name" value="<?php echo $name; ?>" type="text" class="form-control
     <?php echo empty($nameErr) ? '' : 'is-invalid' ?>">
-    <div class="invalid-feedback"><?php echo $nameErr ?></div>
+    <div class="invalid-feedback"><?php echo $nameErr; ?></div>
   </div>
   <div class="mb-3">
     <label class="form-label">Username</label>
     <input name="username" type="text" class="form-control
     <?php echo empty($usernameErr) ? '' : 'is-invalid' ?>">
-    <div class="invalid-feedback"><?php echo $usernameErr ?></div>
+    <div class="invalid-feedback"><?php echo $usernameErr; ?></div>
   </div>
   <div class="mb-3">
     <label class="form-label">Password</label>
     <input name="password" type="password" class="form-control
      <?php echo empty($passwdErr) ? '' : 'is-invalid' ?>">
-    <div class="invalid-feedback"><?php echo $passwdErr ?></div>
+    <div class="invalid-feedback"><?php echo $passwdErr; ?></div>
   </div>
   <div class="mb-3">
     <label class="form-label">Confirm Password</label>
-    <input name="confirmpasswd" type="password" class="form-control
-    <?php echo empty($confirmpasswdErr) ? '' : 'is-invalid' ?>">
-    <div class="invalid-feedback"><?php echo $confirmpasswdErr ?></div>
+    <input name="confirmpasswd" type="password" class="form-control">
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>

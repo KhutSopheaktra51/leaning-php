@@ -19,11 +19,14 @@
             Auth
           </a>
           <ul class="dropdown-menu">
+            <?php if(empty($user)) {?>
             <li><a class="dropdown-item" href="/web testing/?page=login">Login</a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
             <li><a class="dropdown-item" href="/web testing/?page=register">Register</a></li>
+            <?php } else ?>
+              <li><a class="dropdown-item" href="/web testing/?page=logout">Logout</a></li>
           </ul>
         </li>
         <li class="nav-item">
