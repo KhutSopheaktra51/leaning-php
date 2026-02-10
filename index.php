@@ -7,7 +7,7 @@ include './include/navbar.inc.php';
 // include './page/' . $_GET['page'] . '.php';
 
 
-$available_pages = ['login', 'register', 'dashboard', 'logout'];
+$available_pages = ['login', 'register', 'dashboard', 'logout', 'profile'];
 $login_in_pages = ['dashbaord'];
 $non_Login_in_pages = ['login', 'register'];
 
@@ -29,7 +29,5 @@ if (in_array($page, $available_pages)) {
 } else {
     header('Location: ./?page=dashboard');
 }
-
-
 include './include/footer.inc.php';
 // require_once "./init/db.close.php";

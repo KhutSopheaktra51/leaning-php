@@ -25,10 +25,11 @@ function registerUser($name, $username, $passwd)
     return false;
 }
 
-function loginUser($username,$passwd){
-     global $db;
+function loginUser($username, $passwd)
+{
+    global $db;
     $query = $db->prepare('SELECT * FROM tbl_users WHERE username = ? AND passwd = ?');
-    $query->bind_param('ss', $username,$passwd);
+    $query->bind_param('ss', $username, $passwd);
     $query->execute();
     $result = $query->get_result();
     if ($result->num_rows) {
@@ -54,4 +55,42 @@ function loggedInUser()
     return null;
 }
 
+function isAdmin()
+{
+    $user = loggedInUser();
+    if ($user && $user->level == 'admin') {
+        return false;
+    }
+}
+
+function isUserHasPassword($passwd)
+{
+    global $db;
+    $user = loggedInUser();
+    $query = $db->prepare(
+        "SELECT * FROM tbl_users WHERE id = ? AND passwd = ?"
+    );
+    $query->bind_param('ss', $user->id, $passwd);
+    $query->execute();
+    $result = $query->get_result();
+    if ($result->num_rows) {
+        return true;
+    }
+    return false;
+}
+
+function setUserNewPassowrd($passwd)
+{
+    global $db;
+    $user = loggedInUser();
+    $query = $db->prepare(
+        "UPDATE tbl_users SET passwd = ? WHERE id = ?"
+    );
+    $query->bind_param('ss', $passwd, $user->id);
+    $query->execute();
+    if ($db->affected_rows) {
+        return true;
+    }
+    return false;
+}
 ?>
